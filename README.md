@@ -126,7 +126,6 @@ or working Wi-Fi-based setup without the ISP router present:
 - https://www.sweclockers.com/forum/trad/1738761-iptv-fran-ownit-fungerar-inte
 - https://www.sweclockers.com/forum/post/15278839
 - https://www.sweclockers.com/forum/trad/845719-telia-fiberlan-vlan-id-for-olika-tjanster
-- 
 
 ## Conclusion
 
