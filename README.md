@@ -12,7 +12,7 @@ for multicast, IGMP, and advanced bridge configuration.
 
 The setup commonly described in forums is:
 
-Fiber → ISP router (bridge mode) → Custom router → Ethernet → TV
+![Fiber → ISP router (bridge mode) → Custom router → Ethernet → TV](/images/graph02.png)
 
 This approach avoids multicast complexity by letting the ISP router
 handle VLAN tagging and IGMP, but it requires keeping the ISP router
@@ -28,7 +28,7 @@ In my case, this approach was not viable:
 
 The goal was therefore:
 
-Fiber → OpenWrt router → Wi-Fi → TV boxes
+![Fiber → OpenWrt router → Wi-Fi → TV boxes](/images/graph01.png)
 
 No official documentation from OWNIT describes this setup, and I could not
 find any complete or working examples of running OWNIT IPTV directly over
@@ -42,10 +42,6 @@ of the ISP router.
 - Firmware: OpenWrt (24.10.5)
 - TV boxes: OWNIT IPTV (Android-based)
 
-## Network Topology
-
-[diagram here]
-
 ## Key Concepts
 
 - OWNIT uses IPv4 multicast (**IGMPv2**)
@@ -56,28 +52,58 @@ of the ISP router.
   - An active multicast querier
   - Correct IGMP version handling (**IGMPv2**)
 
-
 ## Required Packages
 
 - `omcproxy`
 - `luci-app-omcproxy` (optional, depending on layout)
 
+
+![software/packages](/images/software.png)
+
+
 ## Configuration Summary
 
 ### Interfaces
 - `iptv`: unmanaged interface
+
+  
+![iptv](/images/interfaces-iptv1.png)
+
 - `lan_clients`: bridge containing Wi-Fi interfaces
 
-![Interfaces](/images/test.png)
+
+![bridge](/images/bridge_clients-wifi01.png)
 
 ### Bridge Settings (`lan_clients`)
 - IGMP snooping: **enabled**
 - Multicast querier: **enabled**
 - Force IGMP version: **v2**
 
+
+![IGMP Snooping Bridge Clients](/images/bridge_clients-wifi02.png)
+![IGMP Version Bridge Clients](/images/bridge_clients-wifi03.png)
+
+
 ### omcproxy
 - Uplink interface: `iptv`
 - Downlink interface: `lan_clients`
+
+
+![omcproxy](/images/omcproxy.png)
+
+### VLAN
+
+![VLAN](/images/VLAN.png)
+
+
+### WIFI
+
+![WIFI01](/images/WIFI01.png)
+
+![WIFI02](/images/WIFI02.png)
+
+**Multi To Unicast - OFF**
+
 
 ## Common Issues
 
@@ -89,6 +115,18 @@ of the ISP router.
 
 - **No picture at all**  
   → Missing multicast querier on the Wi-Fi bridge
+
+## References
+
+The following forum threads and discussions were helpful during
+investigation and troubleshooting, although none described a complete
+or working Wi-Fi-based setup without the ISP router present:
+
+- https://www.sweclockers.com/forum/trad/1601107-vlan-med-ownit-tv
+- https://www.sweclockers.com/forum/trad/1738761-iptv-fran-ownit-fungerar-inte
+- https://www.sweclockers.com/forum/post/15278839
+- https://www.sweclockers.com/forum/trad/845719-telia-fiberlan-vlan-id-for-olika-tjanster
+- 
 
 ## Conclusion
 
